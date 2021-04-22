@@ -84,45 +84,58 @@ pie(major_category,  main="The percentage of crime by major category")
 detach(london_crime)
 #-------------------------------------------------------------------------------------------------------------------------------
 #question : 6
-london_crime$Region[london_crime$Borough == 'Barking and Dagenham'] <- 'East'
-london_crime$Region[london_crime$Borough == 'Barnet'] <- 'North'
-london_crime$Region[london_crime$Borough == 'Bexley'] <- 'East'
-london_crime$Region[london_crime$Borough == 'Brent'] <- 'West'
-london_crime$Region[london_crime$Borough == 'Bromley'] <- 'South'
-london_crime$Region[london_crime$Borough == 'Camden'] <- 'North'
-london_crime$Region[london_crime$Borough == 'Croydon'] <- 'South'
-london_crime$Region[london_crime$Borough == 'Ealing'] <- 'West'
-london_crime$Region[london_crime$Borough == 'Enfield'] <- 'North'
-london_crime$Region[london_crime$Borough == 'Greenwich'] <- 'East'
-london_crime$Region[london_crime$Borough == 'Hackney'] <- 'North'
-london_crime$Region[london_crime$Borough == 'Hammersmith and Fulham'] <- 'West'
-london_crime$Region[london_crime$Borough == 'Haringey'] <- 'North'
-london_crime$Region[london_crime$Borough == 'Harrow'] <- 'West'
-london_crime$Region[london_crime$Borough == 'Havering'] <- 'East'
-london_crime$Region[london_crime$Borough == 'Hillingdon'] <- 'West'
-london_crime$Region[london_crime$Borough == 'Hounslow'] <- 'West'
-london_crime$Region[london_crime$Borough == 'Islington'] <- 'Central'
-london_crime$Region[london_crime$Borough == 'Kensington and Chelsea'] <- 'Central'
-london_crime$Region[london_crime$Borough == 'Kingston upon Thames'] <- 'East'
-london_crime$Region[london_crime$Borough == 'Lambeth'] <- 'Central'
-london_crime$Region[london_crime$Borough == 'Lewisham'] <- 'Central'
-london_crime$Region[london_crime$Borough == 'Merton'] <- 'South'
-london_crime$Region[london_crime$Borough == 'Newham'] <- 'East'
-london_crime$Region[london_crime$Borough == 'Redbridge'] <- 'East'
-london_crime$Region[london_crime$Borough == 'Richmond upon Thames'] <- 'West'
-london_crime$Region[london_crime$Borough == 'Southwark'] <- 'Central'
-london_crime$Region[london_crime$Borough == 'Sutton'] <- 'Central'
-london_crime$Region[london_crime$Borough == 'Tower Hamlets'] <- 'South'
-london_crime$Region[london_crime$Borough == 'Waltham Forest'] <- 'Central'
-london_crime$Region[london_crime$Borough == 'Wandsworth'] <- 'East'
-london_crime$Region[london_crime$Borough == 'Westminster'] <- 'Central'
+london_crime$Region[Borough == "Kingston upon Thames" | Borough == "Newham" | Borough == "Barking and Dagenham" | Borough == "Bexley" | Borough == "Greenwich" | Borough == "Havering"| Borough == "Redbridge" | Borough == "Wandsworth" ] <- "East"
+london_crime$Region[Borough == "Barnet" | Borough == "Enfield" | Borough == "Hackney" | Borough == "Haringey" ] <- "North"
+london_crime$Region[Borough == "Brent" | Borough == "Ealing" | Borough == "Hammersmith and Fulham" | Borough == "Harrow" | Borough == "Hillingdon" | Borough == "Hounslow" | Borough == "Richmond upon Thames"] <- "West"
+london_crime$Region[Borough == "Bromley" | Borough == "Croydon" | Borough == "Merton" | Borough == "Sutton" ] <- "South"
+london_crime$Region[Borough == "Islington" | Borough == "Kensington and Chelsea" | Borough == "Lambeth" | Borough == "Lewisham" | Borough == "Southwark" | Borough == "Waltham Forest" | Borough == "Tower Hamlets" | Borough == "Westminster" ] <- "Central"
+#Checking for nulls
+which(london_crime$MajorCategory == NA)
+#City of london is nA so filling the values
+london_crime$Region[Borough == "City of London"] <- "Central"
 
 #----------------------------------------------------------
   #question: 7
+
 london_crime$Region <- factor(london_crime$Region)
 str(london_crime)
 plot(london_crime$Region)
 summary(london_crime$Region)
+
+#highest one : Central
+#least one : South
+#----------------------------------------------------------------------------------------------
+
+
+#question:8 
+highest_crime_dataset <- subset(london_crime_modified, Region == "Central" )
+
+lowest_crime_dataset <- subset(london_crime_modified, Region == "South" )
+#---------------------------------------------------------------------------------------------------------------
+
+
+#Question:9
+opar <- par(no.readonly = TRUE)
+par = opar
+
+par(mfrow=c(1,2))
+plot(highest_region$MajorCategory, main="Number Of Crimes Committed By Region")
+plot(lowest_region$MajorCategory, main="Number Of Crimes Committed By Region")
+
+graph_range <- range(0, 9000)
+graph_range
+
+par(mfrow=c(1,2))
+plot(highest_region$MajorCategory, main="Category Of Crimes Committed In Central London", 
+     ylab="# Of Crimes", xlab="Category Of Crime", las=3, ylim=graph_range)
+plot(lowest_region$MajorCategory, main="Category Of Crimes Committed In South London", 
+     ylab="# Of Crimes", xlab="Category Of Crime", las=3, ylim=graph_range)
+
+#-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+#question 10
+write.csv(london_crime,'london_crime.csv')
 
 
   
